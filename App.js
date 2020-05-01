@@ -7,6 +7,7 @@ import{ MainScreen } from './Pages/MainScreen';
 import{ CreateGameScreen } from './Pages/CreateGameScreen';
 import{ StartGameScreen } from './Pages/StartGameScreen';
 import { RoomScreen } from './Pages/RoomScreen'
+import { JoinRoomScreen } from './Pages/JoinRoomScreen'
 
 
 //Naviagtion Control Stack
@@ -23,6 +24,7 @@ function App() {
       <Stack.Screen name="CreateGameScreen" component={CreateGameScreen}  />
       <Stack.Screen name="StartGameScreen" component={StartGameScreen}  />
       <Stack.Screen name="RoomScreen" component={RoomScreen}  />
+      <Stack.Screen name="JoinRoomScreen" component={JoinRoomScreen}  />
       </Stack.Navigator>
     </NavigationContainer>
   );
