@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { App_Button } from '../Component/App_Button';
 import { View, Text ,StyleSheet ,Image, Button,TouchableOpacity} from 'react-native';
 
  export class RoomScreen extends Component {
@@ -12,7 +13,7 @@ import { View, Text ,StyleSheet ,Image, Button,TouchableOpacity} from 'react-nat
           <Image source={require('./img_avatar.png')} style = {styles.avtarImage}/>
         </View>
         <View style={styles.userButton}>
-          <Button  title="Start" />
+        <App_Button title="Start" navigation={this.props.navigation} RedirectTo='SpinnerScreen' mode='1'/>
         </View> 
       </View>
       <View style={styles.playerAvtar}>

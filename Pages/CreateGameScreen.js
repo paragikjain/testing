@@ -7,7 +7,7 @@ class CreateGameScreen extends Component {
       return (
   <View style={styles.Button_Box}>
         <App_Button title="Create Game" navigation={this.props.navigation} RedirectTo='RoomScreen'  mode='1' />
-        <App_Button title="Join Game" />
+        <App_Button title="Join Game" navigation={this.props.navigation} RedirectTo='JoinRoomScreen'  mode='1' />
         
       </View>
       );
