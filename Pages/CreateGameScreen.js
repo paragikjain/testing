@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button,Alert } from 'react-native';
-import { App_Button } from '../component/App_Button';
+import { App_Button } from '../Component/App_Button';
 
 class CreateGameScreen extends Component {
     render() {

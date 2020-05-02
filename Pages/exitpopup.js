@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button,Alert } from 'react-native';
-import Dialog, { DialogContent } from 'react-native-popup-dialog';
+//import Dialog, { DialogContent } from 'react-native-popup-dialog';
 
 // create a component
 function  Exitpopup() {
