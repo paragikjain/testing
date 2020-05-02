@@ -8,6 +8,7 @@ class MainScreen extends Component {
     <View style={styles.Button_Box}>
           <App_Button title="Start Game" navigation={this.props.navigation} RedirectTo='StartGameScreen'  mode='1' />
           <App_Button title="Play with friend" navigation={this.props.navigation} RedirectTo='CreateGameScreen' mode='1'/>
+          <App_Button title="Toss" navigation={this.props.navigation} RedirectTo='TossScreen' mode='1'/>
           <App_Button title="Exit"  mode='0'/>
     </View>
         );
