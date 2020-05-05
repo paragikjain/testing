@@ -1,9 +1,13 @@
 import React from 'react';
 //import react in our project
-import { StyleSheet, View, Animated, Image, Easing ,Alert, Button} from 'react-native';
+import { StyleSheet, View, Animated, Text,Image, Easing ,Alert, Button} from 'react-native';
 //import all the components we needed
-
+//import io from "socket.io-client";
+//import socketIO from 'socket.io-client';
+import io from 'socket.io-client/dist/socket.io';
 var Rand_Deg
+
+
 export  class SpinnerScreen extends React.Component {
   constructor() {
     super();
@@ -13,11 +17,25 @@ export  class SpinnerScreen extends React.Component {
 
   state={
     deg_x : 0,
-    deg_y : 0
+    deg_y : 0,
+    msg : "Default"
   }
+
+  
   componentDidMount() {
+    this.socket = io('http://192.168.43.31:5000'); 
+
+
+    this.socket.on('start', msg => {
+      this.setState({deg_x : 0, deg_y : 1361})
+    });
+  
+    this.socket.on('stop', msg => {
+      this.random_deg()
+    });
+
     this.StartImageRotateFunction();
-  }
+}
   StartImageRotateFunction() {
     
     this.RotateValueHolder.setValue(0);
@@ -46,6 +64,16 @@ export  class SpinnerScreen extends React.Component {
     Rand_Deg=Math.floor((Math.random() * 200) + 0);
     this.setState({deg_x : Rand_Deg, deg_y : Rand_Deg})
 }
+
+start(){
+  this.socket.emit('start',"Bottle Roatating");
+     this.setState({deg_x : 0, deg_y : 1361})
+}
+
+stop(){
+  this.socket.emit('stop',"Ratation stopped");
+  this.random_deg()
+}
   
   render() {
     return (
@@ -59,8 +87,9 @@ export  class SpinnerScreen extends React.Component {
           }}
         />
         </View>
-        <Button title="Start"  onPress={()=>this.setState({deg_x : 0, deg_y : 1361})}/>
-        <Button title="STOp"  onPress={()=> this.random_deg()}/>
+        <Text>{this.state.msg}</Text>
+        <Button title="Start"  onPress={()=>this.start() }/>
+        <Button title="Stop"  onPress={()=> this.stop()}/>
       </View>
     );
   }

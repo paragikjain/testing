@@ -12,6 +12,7 @@ import { TossScreen } from './Pages/TossScreen'
 import { SpinnerScreen } from './Pages/SpineerScreen'
 
 
+
 //Naviagtion Control Stack
 const Stack = createStackNavigator();
 
