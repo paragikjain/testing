@@ -23,7 +23,7 @@ export  class SpinnerScreen extends React.Component {
 
   
   componentDidMount() {
-    this.socket = io('http://192.168.43.31:5000'); 
+    this.socket = io('http://13.52.248.221:5000'); 
 
 
     this.socket.on('start', msg => {

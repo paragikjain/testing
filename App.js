@@ -9,7 +9,7 @@ import{ StartGameScreen } from './Pages/StartGameScreen';
 import { RoomScreen } from './Pages/RoomScreen';
 import { JoinRoomScreen } from './Pages/JoinRoomScreen';
 import { TossScreen } from './Pages/TossScreen'
-import { SpinnerScreen } from './Pages/SpineerScreen'
+import { SpinnerScreen } from './Pages/SpineerScreen2'
 
 
 

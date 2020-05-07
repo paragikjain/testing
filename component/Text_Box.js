@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     TextBox_Design: {
         marginTop:10,
         width:"80%",
-        height:"30%",
+        height:"10%",
         alignSelf:"center",
         color:"red",
     },
