@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { App_Button } from '../Component/App_Button';
+import { App_Button } from '../component/App_Button';
 import { View, Text ,StyleSheet ,Image, Button,TouchableOpacity} from 'react-native';
 
  export class RoomScreen extends Component {

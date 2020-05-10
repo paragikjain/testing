@@ -6,9 +6,12 @@ import { createStackNavigator } from '@react-navigation/stack';
 import{ MainScreen } from './Pages/MainScreen';
 import{ CreateGameScreen } from './Pages/CreateGameScreen';
 import{ StartGameScreen } from './Pages/StartGameScreen';
-import { RoomScreen } from './Pages/RoomScreen'
-import { JoinRoomScreen } from './Pages/JoinRoomScreen'
-import SpinnerScreen from './Pages/SpinnerScreen.js';
+import { RoomScreen } from './Pages/RoomScreen';
+import { JoinRoomScreen } from './Pages/JoinRoomScreen';
+import { TossScreen } from './Pages/TossScreen'
+import { SpinnerScreen } from './Pages/SpineerScreen2';
+import {Testing} from './Pages/Testing'
+
 
 
 //Naviagtion Control Stack
@@ -26,7 +29,9 @@ function App() {
       <Stack.Screen name="StartGameScreen" component={StartGameScreen}  />
       <Stack.Screen name="RoomScreen" component={RoomScreen}  />
       <Stack.Screen name="JoinRoomScreen" component={JoinRoomScreen}  />
+      <Stack.Screen name="TossScreen" component={TossScreen}  />
       <Stack.Screen name="SpinnerScreen" component={SpinnerScreen}  />
+      <Stack.Screen name="Testing" component={Testing}  />
       </Stack.Navigator>
     </NavigationContainer>
   );
