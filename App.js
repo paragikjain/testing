@@ -12,7 +12,6 @@ import { TossScreen } from './Pages/TossScreen'
 import { SpinnerScreen } from './Pages/SpineerScreen2'
 
 
-
 //Naviagtion Control Stack
 const Stack = createStackNavigator();
 
@@ -22,7 +21,7 @@ function App() {
       <Stack.Navigator 
         screenOptions={{
           headerShown: false
-        }}>
+        }}> 
       <Stack.Screen name="Truth And Dare" component={MainScreen}  />
       <Stack.Screen name="CreateGameScreen" component={CreateGameScreen}  />
       <Stack.Screen name="StartGameScreen" component={StartGameScreen}  />
