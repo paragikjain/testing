@@ -14,6 +14,15 @@ socket.on("stop",msg => {
 	console.log(msg);
 	socket.broadcast.emit("stop",msg);
 });
+socket.on("create",msg => {
+	console.log(msg);
+	socket.join(msg);
+
+});
+socket.on("NEW_USER",msg => {
+	console.log(msg);
+	socket.in(msg).emit("JOINEE","JOined SUccesufully");
+});
 });
 
 server.listen(port, () => console.log("server running on port" + port));

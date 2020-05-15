@@ -13,7 +13,7 @@ class App_Button extends Component {
                 <View style={styles.Button_Design}>
                     <Button
                     title={this.props.title}
-                    onPress={() =>this.props.navigation.navigate(this.props.RedirectTo)}
+                    onPress={() =>this.props.navigation.navigate(this.props.RedirectTo,)}
                     />
                 </View>
             );    

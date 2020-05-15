@@ -10,13 +10,14 @@ import { RoomScreen } from './Pages/RoomScreen';
 import { JoinRoomScreen } from './Pages/JoinRoomScreen';
 import { TossScreen } from './Pages/TossScreen'
 import { SpinnerScreen } from './Pages/SpineerScreen2'
-
+import {Provider} from './context/Provider'
 
 //Naviagtion Control Stack
 const Stack = createStackNavigator();
 
 function App() {
   return (
+    <Provider>
     <NavigationContainer>
       <Stack.Navigator 
         screenOptions={{
@@ -31,6 +32,7 @@ function App() {
       <Stack.Screen name="SpinnerScreen" component={SpinnerScreen}  />
       </Stack.Navigator>
     </NavigationContainer>
+    </Provider>
   );
 }
 

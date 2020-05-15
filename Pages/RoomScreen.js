@@ -1,10 +1,49 @@
 import React, { Component } from 'react';
+import { App_Button } from '../component/App_Button';
 import { View, Text ,StyleSheet ,Image, Button,TouchableOpacity} from 'react-native';
+import {Context} from '../context/Provider'
 
  export class RoomScreen extends Component {
+  constructor(props){
+    super(props)
+    this.state={
+      Totaluser : this.props.route.params.message,
+      RoomId: this.props.route.params.roomid,
+      Status: this.props.route.params.status,
+      check: this.props.route.params.check,
+      socket: this.props.route.params.socket,
+     
+    }
+  }
 
+  componentDidMount(){
+    const { check } = this.state;
+    const { socket } = this.state;
+
+    console.log(check+''+socket);
+    if(check==0){
+      this.context.socket.emit('getter','navneet')
+    
+
+    }
+    this.context.socket.on('JOINEE', msg => {
+      this.setState({Totaluser:msg})
+
+  });
+  }
+  // UNSAFE_componentWillMount = () => {
+  //   const id = this.props.route.params.roomid;
+  //   console.log("roomid", id);
+  // }
 
   render() {
+    const { RoomId } = this.state;
+    const { Status } = this.state;
+    const { Totaluser } = this.state;
+    console.log("roomid", this.props);
+    
+    
+    // console.log("PROPS " + JSON.stringify(this.props.navigation.params.roomid));
     return (
       <View style={styles.userComponent}>
       <View style={styles.userAvtar}>
@@ -12,9 +51,14 @@ import { View, Text ,StyleSheet ,Image, Button,TouchableOpacity} from 'react-nat
           <Image source={require('./img_avatar.png')} style = {styles.avtarImage}/>
         </View>
         <View style={styles.userButton}>
-          <Button  title="Start" />
+        <App_Button title={!Status ? 'Created' : 'Ready'} navigation={this.props.navigation} RedirectTo='SpinnerScreen' mode='1'/>
         </View> 
       </View>
+      <Text>
+        {
+         this.state.Totaluser
+        }
+      </Text>
       <View style={styles.playerAvtar}>
         <View style={styles.userbox1}>
         <View style={styles.playerBlock}>
@@ -162,4 +206,6 @@ const styles = StyleSheet.create({
   }
 
 });
+
+RoomScreen.contextType=Context
 // export {Header}  ;
