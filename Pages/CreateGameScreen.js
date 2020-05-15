@@ -17,37 +17,38 @@ class CreateGameScreen extends Component {
       console.log('check 2');
     });
     this.context.socket.on('JOINEE', msg => {
-      console.log("HI")
+      console.log(msg)
       this.setState({isModalVisible: false})
       this.props.navigation.navigate('RoomScreen',{
-          socket : this.socket,
-          check : 0,
-          name : 'navneet',
-          message : msg,
-          status : false,
-          UserId : "JEF8JF343",
-        
+          roomdata : msg,
       });
 
       this.context.socket.on('NOTJOINEE', msg => {
         this.setState({isModalVisible: false})
         Alert.alert(msg)
       });
-
-      
-
-      
-  });
+ });
 }
 create(){
-  console.log("I am in create finctonc")
-  if(this.context.socket.emit("create","ROOMX")){
-    this.props.navigation.navigate('RoomScreen',{
+  var result  = '';
+  var characters  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  var charactersLength = characters.length;
+  for ( var i = 0; i < 6; i++ ) {
+     result += characters.charAt(Math.floor(Math.random() * charactersLength));
+     
+  }
+  console.log("Result", result);
+demo={}
 
-      roomid : 'ROOMX',
-      status : false,
-      UserId : "KF8F88F8D",
-  
+  if(result.length != 0){
+    demo={"roomid":result,"username":"parag","totalPlayer":1}
+}else{
+   console.log("Please Retry")
+  }
+  //console.log(this.state.Roomid[0].demo.roomid)
+   if(this.context.socket.emit("create",demo)){
+    this.props.navigation.navigate('RoomScreen',{
+      roomdata : demo
     });
   }
   else{

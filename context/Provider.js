@@ -5,7 +5,7 @@ const Context = React.createContext();
 
 class Provider extends Component {
     state = {
-        socket : io('http://13.52.248.221:5000'),
+        socket : io('http://192.168.43.31:5000'),
         a:1
     };
 

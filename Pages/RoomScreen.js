@@ -7,48 +7,62 @@ import {Context} from '../context/Provider'
   constructor(props){
     super(props)
     this.state={
-      Totaluser : this.props.route.params.message,
-      RoomId: this.props.route.params.roomid,
-      Status: this.props.route.params.status,
-      check: this.props.route.params.check,
-      socket: this.props.route.params.socket,
-     
+      roomdata : this.props.route.params.roomdata,
+      roomid:'',
+      totalPlayer:0,
+      admin:'',
+      username:[]
     }
   }
+
+  parse_roomdata=(data)=>{
+    console.log("parsing room data")
+    let users=data.username.split(' ')
+    this.setState({
+                   totalPlayer:data.totalPlayer,
+                   roomid:data.roomid,
+                   admin:users[0]})
+      for(let i=1;i<data.totalPlayer;i++){
+        console.log("users i:"+users[i])
+        this.state.username.push(users[i])
+      }
+                  
+    }
 
   componentDidMount(){
-    const { check } = this.state;
-    const { socket } = this.state;
-
-    console.log(check+''+socket);
-    if(check==0){
-      this.context.socket.emit('getter','navneet')
-    
-
-    }
+    const { roomdata } = this.state;
+    this.parse_roomdata(roomdata)
     this.context.socket.on('JOINEE', msg => {
-      this.setState({Totaluser:msg})
+      this.parse_roomdata(msg)
+   });
+ }
 
-  });
+  createview=()=>{
+    view_array=[]
+    for(let i=0;i<this.state.totalPlayer-1;i++){
+      view_array.push(<View style={styles.userbox1}>
+        <View style={styles.playerBlock}>
+          <Image source={require('./img_avatar.png')} style = {styles.avtarImage}/>
+        </View>
+        <TouchableOpacity style={styles.playerButton}>
+      <Text style={styles.playerText}>{this.state.username[i]}</Text>
+        </TouchableOpacity>
+        </View>)
+    }
+    return view_array
   }
-  // UNSAFE_componentWillMount = () => {
-  //   const id = this.props.route.params.roomid;
-  //   console.log("roomid", id);
-  // }
+
 
   render() {
     const { RoomId } = this.state;
     const { Status } = this.state;
     const { Totaluser } = this.state;
-    console.log("roomid", this.props);
-    
-    
-    // console.log("PROPS " + JSON.stringify(this.props.navigation.params.roomid));
     return (
       <View style={styles.userComponent}>
       <View style={styles.userAvtar}>
         <View style={styles.avtarBlock}>
           <Image source={require('./img_avatar.png')} style = {styles.avtarImage}/>
+          <Text>{this.state.admin}</Text>
         </View>
         <View style={styles.userButton}>
         <App_Button title={!Status ? 'Created' : 'Ready'} navigation={this.props.navigation} RedirectTo='SpinnerScreen' mode='1'/>
@@ -60,50 +74,11 @@ import {Context} from '../context/Provider'
         }
       </Text>
       <View style={styles.playerAvtar}>
-        <View style={styles.userbox1}>
-        <View style={styles.playerBlock}>
-          <Image source={require('./img_avatar.png')} style = {styles.avtarImage}/>
-        </View>
-        <TouchableOpacity style={styles.playerButton}>
-          <Text style={styles.playerText}>Ready</Text>
-        </TouchableOpacity>
-        </View>
-        <View style={styles.userbox2}>
-        <View style={styles.playerBlock}>
-          <Image source={require('./img_avatar.png')} style = {styles.avtarImage}/>
-        </View>
-        <TouchableOpacity style={styles.playerButton}>
-          <Text style={styles.playerText}>Ready</Text>
-        </TouchableOpacity>
-        </View>
-        <View style={styles.userbox3}>
-        <View style={styles.playerBlock}>
-          <Image source={require('./img_avatar.png')} style = {styles.avtarImage}/>
-        </View>
-        <TouchableOpacity style={styles.playerButton}>
-          <Text style={styles.playerText}>Ready</Text>
-        </TouchableOpacity>
-        </View>
-        <View style={styles.userbox4}>
-        <View style={styles.playerBlock}>
-          <Image source={require('./img_avatar.png')} style = {styles.avtarImage}/>
-        </View>
-        <TouchableOpacity style={styles.playerButton}>
-          <Text style={styles.playerText}>Ready</Text>
-        </TouchableOpacity>
-        </View>
-        <View style={styles.userbox5}>
-        <View style={styles.playerBlock}>
-          <Image source={require('./img_avatar.png')} style = {styles.avtarImage}/>
-        </View>
-        <TouchableOpacity style={styles.playerButton}>
-          <Text style={styles.playerText}>Ready</Text>
-        </TouchableOpacity>
-        </View>
+        {this.createview()}
       </View>
       <View style={styles.roomBox}>
         <View style={styles.roomCode}>
-         <Text style={styles.roomText}>Room Code : 4BHF5F2FVJF3R</Text> 
+      <Text style={styles.roomText}>Room Code : {this.state.roomid}</Text> 
         </View>
       </View>
       </View>
