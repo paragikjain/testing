@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Button,Alert } from 'react-native';
 import { App_Button } from '../component/App_Button';
 
 class MainScreen extends Component {
+
     render() {
         return (
     <View style={styles.Button_Box}>

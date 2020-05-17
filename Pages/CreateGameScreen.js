@@ -5,15 +5,20 @@ import Modal from 'react-native-modal';
 import {Text_Box} from '../component/Text_Box'
 import io from 'socket.io-client/dist/socket.io';
 import {Context} from '../context/Provider'
- 
+import AsyncStorage from '@react-native-community/async-storage';
+
+
+
 class CreateGameScreen extends Component {
   state={
     isModalVisible : false,
     id : '',
+    local_username:this.context.local_username,
+    local_userid:this.context.local_userid,
+    usernameexist:this.context.usernameexist,
   }
   componentDidMount() {
-   
-    this.context.socket.on('connect',function() {
+   this.context.socket.on('connect',function() {
       console.log('check 2');
     });
     this.context.socket.on('JOINEE', msg => {
@@ -29,26 +34,47 @@ class CreateGameScreen extends Component {
       });
  });
 }
+
+//local Storage Data Handling
+setDataFromLocal = async () => {
+  try {
+    await AsyncStorage.setItem('Usernames',this.state.local_username)
+    var result  = this.state.local_username;
+    var characters  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < 6; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    await AsyncStorage.setItem('UserID',result)
+    this.context.usernameexist=1;
+    this.context.local_username=this.state.local_username;
+    this.context.local_userid=result;
+    this.props.navigation.navigate('CreateGameScreen',);
+  } catch (e) {
+    // saving error
+  }
+  console.log("i am in saving")
+}
+//EOF local Storage Data Handling
 create(){
   var result  = '';
   var characters  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   var charactersLength = characters.length;
   for ( var i = 0; i < 6; i++ ) {
      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-     
   }
   console.log("Result", result);
-demo={}
+  let createdata={}
 
   if(result.length != 0){
-    demo={"roomid":result,"username":"parag","totalPlayer":1}
+    createdata={"roomid":result,"username":[this.state.local_username],"status":[0],"userID":[this.state.local_userid],"totalPlayer":1}
 }else{
    console.log("Please Retry")
   }
   //console.log(this.state.Roomid[0].demo.roomid)
-   if(this.context.socket.emit("create",demo)){
+   if(this.context.socket.emit("create",createdata)){
     this.props.navigation.navigate('RoomScreen',{
-      roomdata : demo
+      roomdata : createdata
     });
   }
   else{
@@ -58,9 +84,21 @@ demo={}
 }
 joinroom(){
   console.log("clicking on join")
-  this.context.socket.emit('NEW_USER',this.state.id);
+  let joindata={"roomid":this.state.id,"username":[this.state.local_username],"userID":[this.state.local_userid]}
+  this.context.socket.emit('NEW_USER',joindata);
 }
   render() {
+    if(this.state.usernameexist==0){
+      return(
+        <View>
+        <Text>Please enter your name</Text>
+        <TextInput
+        onChangeText={(text) => this.setState({local_username:text})}/>
+        <Button title="Save" onPress={()=>this.setDataFromLocal()} />
+        </View>
+        );
+    }
+    else{
       return (
   <View style={styles.Button_Box}>
         <Button title="Create" onPress={() => this.create()} />
@@ -86,6 +124,7 @@ joinroom(){
         </Modal>
  </View>
       );
+    }
     }
   }
 
