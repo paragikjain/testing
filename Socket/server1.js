@@ -58,8 +58,4 @@ socket.on("toggleStatus",msg => {
 		socket.to(msg[0]).emit("remoteToggleStatus",msg[1]);
 
 });
-});
-
-server.listen(port, () => console.log("server running on port" + port));
-
                                     
