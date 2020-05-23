@@ -35,9 +35,12 @@ import {RTCPeerConnection,RTCIceCandidate,RTCSessionDescription,RTCView,MediaStr
 import io from 'socket.io-client/dist/socket.io';
 registerGlobals()
 class WebRtcScreen extends Component {
+    state = {
+        MediaStreamx :new MediaStream()
+      }
     componentDidMount(){
-          const roomId = 'roomId';
-          const peerName = 'peerNamsse';
+          const roomId = 'room1';
+          const peerName = 'peerName';
           const room = new mediasoupClient.Room();   
           const socket = io('http://13.52.248.221:8080', { query: { roomId, peerName } });  
           room.join(peerName)
@@ -131,18 +134,10 @@ function handlePeer(peer) {
         stream.addTrack(track);
   
         if (consumer.kind === 'video') {
-          const video = document.createElement('video');
-          video.setAttribute('style', 'max-width: 400px;');
-          video.setAttribute('playsinline', '');
-          video.srcObject = stream;
-          document.getElementById('container').appendChild(video);
-          video.play();
+            this.setState({MediaStreamx:stream})
         }
         if (consumer.kind === 'audio') {
-          const audio = document.createElement('audio');
-          audio.srcObject = stream;
-          document.getElementById('container').appendChild(audio);
-          audio.play();
+          console.log("getting audio stream")
         }
       });
   
@@ -158,12 +153,24 @@ function handlePeer(peer) {
     }
   render() {
     return (
-      <View >
-
-      </View>
+        <RTCView 
+        key={1}
+        zOrder={0}
+        objectFit='cover'
+        style={{ ...styles.rtcView }}  
+        streamURL={this.state.MediaStreamx.toURL()}/>
     );
   }
 }
+
+const styles = StyleSheet.create({
+    rtcView: {
+      width: 100, //dimensions.width,
+      height: 200,//dimensions.height / 2,
+      backgroundColor: 'black',
+    },
+    });
+    
 
 //AudioScreen.contextType= Context
 export{WebRtcScreen};
