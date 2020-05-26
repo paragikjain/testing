@@ -1,112 +1,118 @@
 import React from 'react';
-//import react in our project
-import { StyleSheet, View, Animated, Text,Image, Easing ,Alert, Button} from 'react-native';
-//import all the components we needed
-//import io from "socket.io-client";
-//import socketIO from 'socket.io-client';
-import io from 'socket.io-client/dist/socket.io';
-var Rand_Deg
+import {Animated, StyleSheet} from 'react-native';
+
+import {PanGestureHandler, PinchGestureHandler, RotationGestureHandler, State,} from 'react-native-gesture-handler';
+
+let logo = 'https://pluspng.com/img-png/beer-bottle-png-hd-beer-bottle-png-image-png-image-1275.png'
+
+export class SpinnerScreen extends React.Component {
+     rotationRef = React.createRef();
+ constructor(props) {
+        super(props);
+
+        this.state = {
+            _isMounted: false
+        };
+
+  /* Rotation */
+        this._rotate = new Animated.Value(0);
+        this._rotateStr = this._rotate.interpolate({
+            inputRange: [-100, 100],
+            outputRange: ['-50rad', '50rad'],
+        });
+        this._lastRotate = 0;
+        this._onRotateGestureEvent = Animated.event(
+            [{nativeEvent: {rotation: this._rotate}}],
+            {useNativeDriver: true}
+        );
+
+        
+
+        this._translateX = new Animated.Value(0);
+        this._translateY = new Animated.Value(0);
+
+        this._lastOffset = {x: 0, y: 0};
 
 
-export  class SpinnerScreen extends React.Component {
-  constructor() {
-    super();
-    this.RotateValueHolder = new Animated.Value(0);
-  }
-  
-
-  state={
-    deg_x : 0,
-    deg_y : 0,
-    msg : "Default"
-  }
-
-  
-  componentDidMount() {
-    this.socket = io('http://13.52.248.221:5000'); 
-
-
-    this.socket.on('start', msg => {
-      this.setState({deg_x : 0, deg_y : 1361})
-    });
-  
-    this.socket.on('stop', msg => {
-      this.random_deg()
-    });
-
-    this.StartImageRotateFunction();
-}
-  StartImageRotateFunction() {
-    
-    this.RotateValueHolder.setValue(0);
-    Animated.timing(this.RotateValueHolder, {
-      toValue: 1,
-      duration: 1000,
-      useNativeDriver: true,
-      easing: Easing.linear,
-    }).start(() => this.StartImageRotateFunction());
-  }
-
-  jewelStyle(x,y) {
-    const RotateData = this.RotateValueHolder.interpolate({
-        inputRange: [0, 1],
-        outputRange: [x.toString()+"deg", y.toString()+"deg"],
-      });
-      
-    return {
-        width: 100,
-        height: 200,
-        transform: [{ rotate: RotateData }],
     }
-  }
 
-  random_deg(){
-    Rand_Deg=Math.floor((Math.random() * 200) + 0);
-    this.setState({deg_x : Rand_Deg, deg_y : Rand_Deg})
+
+    _onRotateHandlerStateChange = event => {
+        if (event.nativeEvent.oldState === State.ACTIVE) {
+            this._lastRotate += event.nativeEvent.rotation;
+            this._rotate.setOffset(this._lastRotate);
+            this._rotate.setValue(0);
+        }
+    };
+
+
+
+    render() {
+        const {image, children} = this.props;
+
+        return (
+            <React.Fragment>
+
+                <Animated.View  style={[
+                    styles.wrapper,
+                    {
+                        transform: [
+                            {translateX: this._translateX},
+                            {translateY: this._translateY},
+                        ],
+                    },
+                ]}>
+                    <RotationGestureHandler
+                       onGestureEvent={this._onRotateGestureEvent}
+                       onHandlerStateChange={this._onRotateHandlerStateChange}
+                        >
+                        <Animated.View style={[
+                                styles.wrapper,
+                                {
+                                    transform: [
+                                        {rotate: this._rotateStr},
+                                    ],
+                                },
+                            ]}
+                        
+                            
+                           collapsable={false}>
+                                    <Animated.Image
+                                        resizeMode={"contain"}
+                                        style={[
+                                            styles.pinchableImage,
+                                        ]}
+                                        source={{uri: logo}}
+                                    />
+                              
+                            
+                        </Animated.View>
+                    </RotationGestureHandler>
+                </Animated.View>
+            
+                { children }
+            </React.Fragment>
+        );
+    }
 }
 
-start(){
-  this.socket.emit('start',"Bottle Roatating");
-     this.setState({deg_x : 0, deg_y : 1361})
-}
+export default SpinnerScreen;
 
-stop(){
-  this.socket.emit('stop',"Ratation stopped");
-  this.random_deg()
-}
-  
-  render() {
-    return (
-      <View style={styles.container}>
-      <View style={styles.imgBack}>
-        <Animated.Image
-          style={this.jewelStyle(this.state.deg_x,this.state.deg_y)}
-          source={{
-            uri:
-              'https://pluspng.com/img-png/beer-bottle-png-hd-beer-bottle-png-image-png-image-1275.png',
-          }}
-        />
-        </View>
-        <Text>{this.state.msg}</Text>
-        <Button title="Start"  onPress={()=>this.start() }/>
-        <Button title="Stop"  onPress={()=> this.stop()}/>
-      </View>
-    );
-  }
-}
 
 const styles = StyleSheet.create({
-  imgBack:{
-    width : 300,
-    height : 300,
-    alignItems :'center',
-    borderRadius : 150,
-    justifyContent : 'center',
-    backgroundColor : 'yellow',
-  },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#C2C2C2',
-  }});
+    container: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'transparent',
+        overflow: 'hidden',
+        alignItems: 'center',
+        flex: 1,
+        justifyContent: 'center'
+    },
+    pinchableImage: {
+        backgroundColor: "transparent",
+        ...StyleSheet.absoluteFillObject,
+    },
+    wrapper: {
+        flex: 1,
+    },
+});

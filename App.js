@@ -9,21 +9,20 @@ import{ StartGameScreen } from './Pages/StartGameScreen';
 import { RoomScreen } from './Pages/RoomScreen';
 import { JoinRoomScreen } from './Pages/JoinRoomScreen';
 import { TossScreen } from './Pages/TossScreen'
-import { SpinnerScreen } from './Pages/SpineerScreen2';
-import {Testing} from './Pages/Testing'
-
-
+import { SpinnerScreen } from './Pages/SpineerScreen2'
+import {Provider} from './context/Provider'
 
 //Naviagtion Control Stack
 const Stack = createStackNavigator();
 
 function App() {
   return (
+    <Provider>
     <NavigationContainer>
       <Stack.Navigator 
         screenOptions={{
           headerShown: false
-        }}>
+        }}> 
       <Stack.Screen name="Truth And Dare" component={MainScreen}  />
       <Stack.Screen name="CreateGameScreen" component={CreateGameScreen}  />
       <Stack.Screen name="StartGameScreen" component={StartGameScreen}  />
@@ -31,9 +30,9 @@ function App() {
       <Stack.Screen name="JoinRoomScreen" component={JoinRoomScreen}  />
       <Stack.Screen name="TossScreen" component={TossScreen}  />
       <Stack.Screen name="SpinnerScreen" component={SpinnerScreen}  />
-      <Stack.Screen name="Testing" component={Testing}  />
       </Stack.Navigator>
     </NavigationContainer>
+    </Provider>
   );
 }
 
