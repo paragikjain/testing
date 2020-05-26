@@ -4,6 +4,15 @@ const server =require("http").createServer(app)
 const io= require("socket.io").listen(server)
 const port=5000
 var roomsData=[];
+var rooms=[];
+function editroomdata(index,data){
+	console.log("Editing Room")
+	roomsData[index].username.push(data.username[0])
+	roomsData[index].userID.push(data.userID[0])
+	roomsData[index].status.push(0)
+	roomsData[index].totalPlayer=roomsData[index].totalPlayer+1;
+	console.log(roomsData[index])
+}
 io.on('connection', function (socket) {
 console.log("a user connected");
 socket.on('disconnect', function() {
@@ -18,27 +27,35 @@ socket.on("stop",msg => {
         socket.broadcast.emit("stop",msg);
 });
 socket.on("create",msg => {
-        console.log(msg.roomid);
         roomsData.push(msg)
+		rooms.push(msg.roomid)
+		console.log(roomsData)
+		console.log(rooms)
+		console.log(rooms.indexOf(msg.roomid))
         socket.join(msg.roomid);
 
 });
 socket.on("NEW_USER",msg => {
-        console.log(socket.adapter.rooms)
-        if(roomsData.includes(msg)==true){
-                console.log("Room Exist")
-        console.log(msg);
-        socket.join(msg);
-        io.to(msg).emit("JOINEE","one new user");}
+        if(rooms.includes(msg.roomid)==true){
+        console.log("Room Exist")
+        editroomdata(rooms.indexOf(msg.roomid),msg)
+        socket.join(msg.roomid);
+		io.to(msg.roomid).emit("JOINEE",roomsData[rooms.indexOf(msg.roomid)]);
+		}
         else{
                 console.log("room not existed ");
-                socket.broadcast.emit("NOTJOINEE","Room is not exist")
+                socket.emit("NOTJOINEE","Room is not exist")
         }
 
 });
-socket.on("getter",msg => {
+socket.on("toggleStatus",msg => {
+		let index= rooms.indexOf(msg[0])
+		console.log(msg[0])
+		console.log(index)
+		console.log(msg[1])
+		roomsData[index].status[msg[1]]=roomsData[index].status[msg[1]]? 0:1
+		console.log(roomsData[index])
+		socket.to(msg[0]).emit("remoteToggleStatus",msg[1]);
 
-        io.to(msg).emit("setter",msg);
-});
 });
                                     

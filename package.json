@@ -10,26 +10,43 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.10.1",
     "@react-native-community/masked-view": "^0.1.10",
+<<<<<<< HEAD
     "@react-navigation/native": "^5.2.3",
     "@react-navigation/stack": "^5.2.18",
     "express": "^4.17.1",
+=======
+    "@react-navigation/native": "^5.2.1",
+    "@react-navigation/stack": "^5.2.16",
+    "buffer": "^5.6.0",
+    "mediasoup-client": "^2.2.3",
+>>>>>>> 7e50a1ba2aa24a89330a4998a05a4608f351f23b
     "react": "16.11.0",
     "react-native": "0.62.2",
+    "react-native-audio-record": "^0.2.2",
     "react-native-canvas": "^0.1.37",
     "react-native-draggable-flatlist": "^2.3.2",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-modal": "^11.5.6",
+    "react-native-permissions": "^2.1.4",
     "react-native-reanimated": "^1.8.0",
+    "react-native-recording": "^0.4.1",
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "^2.7.0",
     "react-native-sound": "^0.11.0",
     "react-native-sound-player": "^0.10.4",
+    "react-native-webrtc": "^1.75.3",
     "react-native-websocket": "^1.0.2",
     "react-native-webview": "^9.4.0",
     "react-navigation": "^4.3.9",
+<<<<<<< HEAD
     "socket.io": "^2.3.0",
     "socket.io-client": "^2.3.0"
+=======
+    "socket.io-client": "^2.1.1",
+    "socket.io-stream": "^0.9.1"
+>>>>>>> 7e50a1ba2aa24a89330a4998a05a4608f351f23b
   },
   "devDependencies": {
     "@babel/core": "7.9.6",

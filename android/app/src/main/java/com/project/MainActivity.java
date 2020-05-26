@@ -1,6 +1,7 @@
 package com.project;
 
 import com.facebook.react.ReactActivity;
+import com.oney.WebRTCModule.WebRTCModulePackage;
 
 public class MainActivity extends ReactActivity {
 
@@ -12,4 +13,6 @@ public class MainActivity extends ReactActivity {
   protected String getMainComponentName() {
     return "project";
   }
+
+  
 }

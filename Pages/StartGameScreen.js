@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button,Alert } from 'react-native';
 import {Context} from '../context/Provider'
-import io from 'socket.io-client/dist/socket.io';
+
 
 class StartGameScreen extends Component {
-  componentDidMount(){
-  this.context.socket.emit("start","hello")
-
-  }
-    render() {
+  render() {
       return (
       <Context.Consumer>{
-        food=><Text>{food.a}</Text>
+        data=><View>
+        <Text>{data.usernameexist}</Text>
+        <Text>{data.local_username}</Text>
+        <Text>{data.local_userid}</Text>
+      </View>
       }
         </Context.Consumer>
     );

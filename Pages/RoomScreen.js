@@ -1,32 +1,37 @@
 import React, { Component } from 'react';
 import { App_Button } from '../component/App_Button';
-import { View, Text ,StyleSheet ,Image, Button,TouchableOpacity} from 'react-native';
+import { View, Text ,StyleSheet ,Image, Button,TouchableOpacity, Alert} from 'react-native';
 import {Context} from '../context/Provider'
+import AsyncStorage from '@react-native-community/async-storage';
 
  export class RoomScreen extends Component {
-  constructor(props){
-    super(props)
-    this.state={
-      roomdata : this.props.route.params.roomdata,
-      roomid:'',
-      totalPlayer:0,
-      admin:'',
-      username:[]
-    }
-  }
+  state={
+        roomdata : this.props.route.params.roomdata,
+        roomid:'',
+        totalPlayer:0,
+        admin:'',
+        username:[],
+        status:[],
+        curruserIndex:0,
+        local_username:this.context.local_username,
+        local_userid:this.context.local_userid,
+        allready:0,
+      }
+  
 
   parse_roomdata=(data)=>{
     console.log("parsing room data")
-    let users=data.username.split(' ')
+    console.log(data.userID.indexOf(this.state.local_userid))
     this.setState({
                    totalPlayer:data.totalPlayer,
                    roomid:data.roomid,
-                   admin:users[0]})
+                   admin:data.username[0],
+                   curruserIndex: data.userID.indexOf(this.state.local_userid)})
       for(let i=1;i<data.totalPlayer;i++){
-        console.log("users i:"+users[i])
-        this.state.username.push(users[i])
+        this.state.username.push(data.username[i])
+        this.state.status.push(data.status[i])
       }
-                  
+     console.log(this.state.curruserIndex)             
     }
 
   componentDidMount(){
@@ -35,18 +40,45 @@ import {Context} from '../context/Provider'
     this.context.socket.on('JOINEE', msg => {
       this.parse_roomdata(msg)
    });
+   this.context.socket.on('remoteToggleStatus', msg => {
+    this.state.status[msg]=this.state.status[msg]?0:1
+    this.setState({status:this.state.status})
+    if(this.state.status.indexOf(0)==-1){
+      console.log("-1")
+      this.setState({allready:1})
+    }
+    else{
+     console.log("0")
+      this.setState({allready:0})
+    }
+ });
+ }
+ 
+ toggleReady=()=>{
+   this.state.status[this.state.curruserIndex]=this.state.status[this.state.curruserIndex]?0:1
+   this.setState({status:this.state.status})
+   this.context.socket.emit("toggleStatus",[this.state.roomid,this.state.curruserIndex])
+   if(this.state.status.indexOf(0)==-1){
+     console.log("-1")
+     this.setState({allready:1})
+   }
+   else{
+    console.log("0")
+     this.setState({allready:0})
+   }
  }
 
   createview=()=>{
-    view_array=[]
-    for(let i=0;i<this.state.totalPlayer-1;i++){
+    let view_array=[]
+    for(let i=1;i<this.state.totalPlayer;i++){
       view_array.push(<View style={styles.userbox1}>
         <View style={styles.playerBlock}>
           <Image source={require('./img_avatar.png')} style = {styles.avtarImage}/>
         </View>
         <TouchableOpacity style={styles.playerButton}>
-      <Text style={styles.playerText}>{this.state.username[i]}</Text>
-        </TouchableOpacity>
+      <Text style={styles.playerText}>{this.state.username[i-1]}</Text>
+      <Text>{this.state.status[i] ? 'NotReady': 'Ready'}</Text>
+      </TouchableOpacity>
         </View>)
     }
     return view_array
@@ -59,13 +91,15 @@ import {Context} from '../context/Provider'
     const { Totaluser } = this.state;
     return (
       <View style={styles.userComponent}>
+      <Button title="Start Game" onPress={()=>this.state.allready ? this.props.navigation.navigate('SpinnerScreen') :Alert.alert("all players are not ready") }/>
+      <Button title={this.state.status[this.state.curruserIndex] ? 'Ready': 'NotReady'} onPress={()=>this.toggleReady()}/>
       <View style={styles.userAvtar}>
         <View style={styles.avtarBlock}>
           <Image source={require('./img_avatar.png')} style = {styles.avtarImage}/>
-          <Text>{this.state.admin}</Text>
+          <Text style={styles.playerText}>{this.state.admin}</Text>
         </View>
         <View style={styles.userButton}>
-        <App_Button title={!Status ? 'Created' : 'Ready'} navigation={this.props.navigation} RedirectTo='SpinnerScreen' mode='1'/>
+        
         </View> 
       </View>
       <Text>
