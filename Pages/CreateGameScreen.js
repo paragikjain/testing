@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import {App_Button} from '../component/App_Button';
 import Modal from 'react-native-modal';
+import { SvgXml } from 'react-native-svg';
 import {Text_Box} from '../component/Text_Box';
 import io from 'socket.io-client/dist/socket.io';
 import {Context} from '../context/Provider';
@@ -123,21 +124,26 @@ class CreateGameScreen extends Component {
             </TouchableOpacity>
           </View>
         </ScrollView>
-              <Modal style={{justifyContent: 'center', height:'10%'}} isVisible={this.state.isModalVisible}>
-              <View style={{flex: 1,
-                              flexDirection: 'column',
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              backgroundColor:'red'}}>
-                    <View >
-                  <Text>Please Enter Game ID</Text>
-                  <TextInput
-                    onChangeText={(text) => this.setState({id:text})}
-                  />
-
-                  <Button title="JOin Room" onPress={()=>this.joinroom()} />
-                   </View>
-                   </View>
+              <Modal style={styles.modelBox} isVisible={this.state.isModalVisible}>
+              <View style={styles.modalView} >
+              <ImageBackground style={styles.modalbg} source={require('../assets/img/bg_bubble.png')}>
+                <Text style={styles.uppermodalText}>Enter Room Code</Text>
+              <TextInput
+                style={styles.modalInput}
+                />
+                <TouchableOpacity
+              onPress={()=>this.setState({isModalVisible: false})}>
+              <View style={styles.modalbuttonview}>
+                <ImageBackground
+                  resizeMode="contain"
+                  style={styles.modalbuttonmiddle}
+                  source={require('../assets/img/base_button.png')}>
+                  <Text style={styles.text}>Join</Text>
+                </ImageBackground>
+              </View>
+            </TouchableOpacity>
+              </ImageBackground>
+              </View>
               </Modal>
       </View>
     );
@@ -146,6 +152,48 @@ class CreateGameScreen extends Component {
 
 // define your styles
 const styles = StyleSheet.create({
+  modalView:{
+    width : '100%',
+    height : 200,
+    backgroundColor: 'orange',
+    borderRadius : 10,
+  },
+  uppermodalText:{
+    fontFamily: 'WickedMouse',
+    fontSize : 20,
+    color : '#fff',
+    textShadowColor:'black',
+    textShadowOffset:{width: 2, height: 2},
+    textShadowRadius:10,
+    shadowOpacity: 1,
+    marginVertical : 20,
+  },
+  modalbuttonview:{
+    width: 130,
+    height: 80,
+  },
+  modalbuttonmiddle:{
+    width : '100%',
+    marginTop : 10,
+    height : '100%',
+    alignItems :'center',
+    justifyContent: 'center',
+  },
+  modalInput:{
+    backgroundColor : 'white',
+    height : 40,
+    textAlign : 'center',
+    borderRadius : 30,
+    width : 150,
+  },
+  modelBox:{
+    alignItems : 'center',
+  },
+  modalbg:{
+    flex : 1,
+    justifyContent :'center',
+    alignItems : 'center',
+  },
   Button_Box: {
     flex: 1,
     position: 'relative',
