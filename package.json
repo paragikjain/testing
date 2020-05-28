@@ -35,8 +35,13 @@
     "react-native-websocket": "^1.0.2",
     "react-native-webview": "^9.4.0",
     "react-navigation": "^4.3.9",
+<<<<<<< HEAD
     "socket.io-client": "^2.1.1",
     "socket.io-stream": "^0.9.1"
+=======
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0"
+>>>>>>> fdf7efe2a5e8c79a4f7fdd0a8068a4fb02bb7317
   },
   "devDependencies": {
     "@babel/core": "7.9.6",
