@@ -275,11 +275,11 @@ const styles = StyleSheet.create({
   },
   text:{
     alignItems :'center',
-    color : 'white',
     textShadowColor:'black',
     textShadowOffset:{width: 2, height: 2},
     textShadowRadius:10,
     shadowOpacity: 1,
+    color : 'white',
     fontFamily: 'WickedMouse',
     fontSize : 15,
 

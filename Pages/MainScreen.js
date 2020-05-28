@@ -15,12 +15,12 @@ class MainScreen extends Component {
           <Image style={styles.logo} source={require('../assets/img/logo.png')} />
         </View>
         <View style={styles.midbutton}>
-        <App_Button
+        {/* <App_Button
           title="Start Game"
           navigation={this.props.navigation}
           RedirectTo="StartGameScreen"
           mode="1"
-        />
+        /> */}
         <App_Button
           title="Play Now"
           navigation={this.props.navigation}
@@ -44,13 +44,14 @@ class MainScreen extends Component {
           navigation={this.props.navigation}
           RedirectTo="Connection"
           mode="1"
-        />
+        />*/
         <App_Button
           title="Testing"
           navigation={this.props.navigation}
           RedirectTo="Testing"
           mode="1"
-        /> */}
+        /> 
+        }
         </View>
         </ScrollView>
       </View>
